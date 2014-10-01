@@ -48,7 +48,7 @@
 			var self  = this;
 			var queue = [];
 
-			self.plugins = {
+			self.plugins = self.plugins || {
 				names     : [],
 				settings  : {},
 				requested : {},

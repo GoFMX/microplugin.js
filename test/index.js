@@ -169,6 +169,23 @@ describe('MicroPlugin', function() {
 
 		});
 
+		it('should not overwrite `plugins` data from previous initializations', function() {
+			var Lib = function() {
+				this.initializePlugins({'a': {test: 'hello_a'}});
+				this.initializePlugins(['b']);
+			};
+			MicroPlugin.mixin(Lib);
+
+			Lib.define('a', function () { });
+			Lib.define('b', function () { });
+
+			var instance = new Lib();
+			assert(instance.plugins.names.indexOf('a') >= 0);
+			assert.deepEqual(instance.plugins.settings['a'], {test: 'hello_a'});
+			assert(instance.plugins.requested['a']);
+			assert(instance.plugins.loaded.hasOwnProperty('a'));
+		});
+
 	});
 
 	describe('#require()', function() {
